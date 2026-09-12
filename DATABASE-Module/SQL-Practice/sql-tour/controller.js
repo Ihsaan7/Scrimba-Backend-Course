@@ -393,5 +393,99 @@ export function deleteTour(req , res , tourId)
 
 export function getToursDetails( req , res)
 {
+    const sql = `
+        SELECT
+            tours.id,
+            tours.name AS tour_name,
+            tours.Price,
+            guides.name AS guide_name,
+            guides.email AS guide_email
+        FROM tours
+        INNER JOIN guides ON tour.guide_id = guides.id
+
+    `
+    db.all(sql, [] , ( err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("Detailed tours query failed:", err.message);
+                     res.writeHead(500, { "Content-Type": "application/json" });
+                     res.end(JSON.stringify({ error: "Something went wrong while fetching detailed tours." }));
+                    return;
+                }
+            res.writeHead(
+                200,
+                {
+                    "content-type":"application/json"
+                }
+            )
+            res.end(JSON.stringify(rows))
+        })
+}
+
+export function getAllDetail( req , res)
+{
+    const sql=`
+        SELECT
+            tours.id,
+            tours.name AS tour_name,
+            tours.price,
+            guides.name AS guide_name,
+            guides.email AS guide_email
+        FROM tours
+        LEFT JOIN guides ON tours.guide_id = guides.id
+    `
+
+    db.all(sql ,[] , (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while fetching detials!"}))
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows))
+        })
     
 }
+
+export function getWorkLoad(req , res)
+{
+    const sql=`
+        SELECT
+            guides.id AS guide_id,
+            guides.name AS guide_name,
+            COUNT(tours.id) AS total_tours,
+        FROM guides
+        LEFT JOIN guides ON guides.id = tours.guide_id
+        GROUP BY guides.id
+    `
+    
+    db.all(sql ,[] , (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while fetching detials!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows))
+        })
+}
+
+ex
