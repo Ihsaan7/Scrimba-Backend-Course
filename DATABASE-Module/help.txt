@@ -1,0 +1,32 @@
+🏔️ Exercise 8: The "Tour Eraser" Challenge!
+Let’s write the deletion endpoint from scratch to complete your SQL 
+CRUD suite!
+🎯 Your Mission:
+Create a fresh routing endpoint and controller handler from scratch
+to handle deleting a tour.
+DELETE /api/tours/delete
+Your controller must collect and parse the incoming JSON body containing 
+the id of the tour to delete.
+Validate that the id is provided.
+SQL Query Goal: Delete the matching row in the tours table safely using ? 
+placeholders.
+JavaScript Goal: Execute using db.run.
+If this.changes === 0, return a 404 Not Found JSON object stating "No tour 
+found with that ID".
+Otherwise, return a 200 OK JSON response confirming: { id, deleted: true }.
+Write your new route block in server.js (using HTTP method DELETE) and your 
+handler in controller.js completely from scratch! Paste them below when you're
+ready! 🗑️🚀
+
+
+ 🚀 What's Next: The Final Piece of CRUD (DELETE) 🗑️
+You have conquered Reading (SELECT), Writing (INSERT), and Modifying (UPDATE).
+The final operation of the foundational database lifecycle is Deleting data.
+1. The SQL DELETE Syntax
+To permanently remove a record from a table, we use the DELETE FROM statement.
+DELETE FROM table_name WHERE condition;
+For example, to delete the tour with ID 3:
+DELETE FROM tours WHERE id = 3;
+⚠️ The Golden Warning Part 2: Just like UPDATE, if you run DELETE FROM tours 
+and forget the WHERE id = 3 clause, your database will instantly wipe out every 
+single tour in the table! Always write your WHERE clause first.

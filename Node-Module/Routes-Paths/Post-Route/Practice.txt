@@ -1,0 +1,29 @@
+Exercise 1: The "Pizza Shop" Alarm 🍕 (Isolated Event Emitter)
+Goal: Master the absolute basics of creating an emitter, registering a listener, and passing data.
+The Scenario: You are building the backend for a local pizzeria. When a customer orders a pizza, you want to announce it so that:
+The kitchen knows what pizza to bake.
+The delivery driver knows where to go.
+Your Task: Create a file called pizzaShop.js and write the code to:
+Import EventEmitter and create an instance named orderEmitter.
+Register a listener for "newOrder". It should accept an order object (with customerName and pizzaType) and log: "👨‍🍳 Kitchen Alert: Baking a [pizzaType] pizza for [customerName]!".
+Register a second, separate listener for "newOrder". It should log: "🚗 Driver Alert: Getting ready to deliver to [customerName]!".
+Emit the "newOrder" event, passing an order object: { customerName: "Sophia", pizzaType: "Pepperoni" }.
+Starter Template for pizzaShop.js:
+import EventEmitter from "node:events";
+
+// 1. Create the emitter
+const orderEmitter = new EventEmitter();
+
+// 2. Register Kitchen Listener
+orderEmitter.on("newOrder", (order) => {
+    // YOUR CODE HERE: Log the kitchen alert
+});
+
+// 3. Register Driver Listener
+orderEmitter.on("newOrder", (order) => {
+    // YOUR CODE HERE: Log the driver alert
+});
+
+// 4. Emit the event!
+const myOrder = { customerName: "Sophia", pizzaType: "Pepperoni" };
+// YOUR CODE HERE: Emit "newOrder" and pass myOrder

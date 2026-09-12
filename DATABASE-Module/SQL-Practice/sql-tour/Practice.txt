@@ -1,0 +1,23 @@
+#### 🎯 Your Mission:
+
+Write your **server.js** routing logic and **controller.js** 
+database handler from scratch to handle:
+
+* **GET /api/tours/detailed**
+  * **SQL Query Goal:** Write an `INNER JOIN` query between 
+  `tours` and `guides`.
+  * Retrieve:
+    * `tours.id`
+    * `tours.name` (aliased `AS tour_name`)
+    * `tours.price`
+    * `guides.name` (aliased `AS guide_name`)
+    * `guides.email` (aliased `AS guide_email`)
+  * **JavaScript Goal:** Execute the query using `db.all`
+  , 
+  handle error responses securely, and return the combined
+   array of objects as JSON.
+
+Write your code blocks completely from scratch and paste 
+them below when ready! 🚀
+
+

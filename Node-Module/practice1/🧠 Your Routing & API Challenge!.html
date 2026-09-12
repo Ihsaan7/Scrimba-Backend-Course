@@ -1,0 +1,185 @@
+<!-- 🧠 Your Routing & API Challenge!
+Let’s combine routing and JSON serving into a single, cohesive server.
+Your Mission:
+Create an HTTP server listening on port 8000.
+Set up three routes:
+Route 1: If a GET request is made to "/", respond with HTML:
+ <h1>Welcome to the Wild Horizons API!</h1>.
+Route 2: If a GET request is made to "/api/tours", respond with
+ a 200 status and a 'Content-Type' of 'application/json'. Stringify
+  and send back the tours array provided in the template below.
+Route 3 (Catch-all/Error): If the user visits any other URL, 
+respond with a 404 status, 'Content-Type': 'application/json',
+and send back a stringified object containing an error message: 
+{ error: "Route not found" }.
+Here is your starter template:
+// ─── CHALLENGE TEMPLATE ───
+import http from 'node:http';
+
+const tours = [
+    { id: 1, name: "Deep Forest Trek", price: 299 },
+    { id: 2, name: "Mountain Ridge Climb", price: 499 }
+];
+
+const server = http.createServer((req, res) => {
+    // Step 1: Set up your 'if/else if/else' routing checks using 
+    req.url and req.method
+    
+    // Step 2: Handle "/" (HTML output)
+    
+    // Step 3: Handle "/api/tours" (JSON output)
+    
+    // Step 4: Handle 404 fallback (JSON error output)
+    
+});
+
+const PORT = 8000;
+server.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+}); -->
+
+
+<!-- 🧠 Your Path Parameter Challenge!
+Let's integrate this dynamic routing into your existing server!
+Your Mission:
+Update your server code to handle a new GET route pattern: /api/tours/[id].
+Use req.url.startsWith("/api/tours/") to match the route.
+Extract the dynamic ID from the URL and convert it to a number.
+Search the tours array for a tour matching that ID.
+If the tour exists: Respond with status 200, content-type application/json, 
+and send the stringified tour object.
+If the tour does not exist: Respond with status 404, content-type application/json, 
+and send a stringified error object: { error: "Tour not found" }.
+Here is your starting template:
+// ─── CHALLENGE TEMPLATE ───
+import http from 'node:http';
+
+const tours = [
+    { id: 1, name: "Deep Forest Trek", price: 299 },
+    { id: 2, name: "Mountain Ridge Climb", price: 499 }
+];
+
+const server = http.createServer((req, res) => {
+    // 1. Homepage route
+    if (req.url === "/" && req.method === "GET") {
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.end("<h1>Welcome to the Wild Horizons API!</h1>");
+    } 
+    // 2. Get ALL tours route
+    else if (req.url === "/api/tours" && req.method === "GET") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(tours));
+    } 
+    // 3. Get SINGLE tour route (NEW!)
+    else if (req.url.startsWith("/api/tours/") && req.method === "GET") {
+        // Step A: Split the req.url and extract the ID
+        
+        // Step B: Use tours.find() to search for the matching tour
+        
+        // Step C: Send the 200 success response, OR throw a 404 if not found
+        
+    } 
+    // 4. Catch-all route
+    else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: "Route not found" }));
+    }
+});
+
+const PORT = 8000;
+server.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+}); -->
+
+
+
+
+<!-- 
+🧠 Your Modularisation Challenge!
+Let’s practice splitting your code! We are going to modularise 
+your server by moving the
+data and the router/handlers into separate files.
+Your Mission: Write the code for two files:
+File 1: toursData.js
+Create and export an array called tours containing at least
+ two tour objects.
+File 2: server.js
+Import http from 'node:http'.
+Import the tours array from ./toursData.js.
+Create a server that handles a GET request to /api/tours by
+ sending back the imported array.
+Listen on port 8000. -->
+
+
+<!-- 🧠 Your Query Parameter Challenge: The Tour Filter!
+Let's write a route that filters our tours based on a maxPrice query parameter.
+Your Mission:
+Set up your routing to check if the path is exactly /api/tours (use pathname instead of 
+req.url!).
+Extract the maxPrice query parameter.
+If maxPrice is provided in the URL:
+Convert it to a number.
+Filter the tours array so you only keep tours where tour.price <= maxPrice.
+Respond with the filtered array as JSON.
+If no maxPrice is provided:
+Respond with the entire, unfiltered tours array.
+Use this blueprint to build your server:
+// ─── CHALLENGE TEMPLATE ───
+import http from "node:http";
+import { tours } from "./toursData.js";
+
+const server = http.createServer((req, res) => {
+    // Step 1: Parse the URL using the global URL object
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+    const pathname = parsedUrl.pathname;
+
+    // Step 2: Check the route pathname
+    if (pathname === "/api/tours" && req.method === "GET") {
+        
+        // Step 3: Get the "maxPrice" query parameter
+        const maxPriceParam = parsedUrl.searchParams.get("maxPrice");
+
+        if (maxPriceParam) {
+            // Step 4: Convert to a number and filter the array
+            const maxPrice = Number(maxPriceParam);
+            const filteredTours = tours.filter(tour => tour.price <= maxPrice);
+
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(filteredTours));
+        } else {
+            // Step 5: No filter? Send all tours
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(tours));
+        }
+    } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Route not found" }));
+    }
+});
+
+const PORT = 8000;
+server.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`)); -->
+
+Your Graduation Objective:
+Create a single, cohesive server.js that brings together all your skills:
+Imports: Import http from 'node:http' and { tours } from your ./toursData.js file.
+URL Parsing: Use new URL() to parse incoming requests.
+Route 1 (Unfiltered & Query-Filtered Tours): Handles GET requests to /api/tours.
+If a maxPrice query parameter is present, filter the tours.
+If not, return all tours.
+Crucial: Include both the "Content-Type": "application/json" and 
+"Access-Control-Allow-Origin": "*" headers!
+Route 2 (Individual Tours by ID): Handles GET requests to dynamic path parameters 
+like /api/tours/1.
+Extract the ID and find the matching tour.
+Return the tour with a 200 status, or a 404 status with { error: "Tour not found!" } 
+if it doesn't exist.
+Crucial: Add the CORS header here too!
+Route 3 (Catch-All): Returns a JSON 404 error for any other URL.
+Write your complete server.js file, run it locally, and paste it here for your final 
+REST API graduation review!
+
+1: fetch all
+2: fetch queryParams
+3: Fetch dynamic id
+4: 404 route

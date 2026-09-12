@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wild Horizon Practice</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <header class="intro">
+      <p class="eyebrow">Backend practice lab</p>
+      <h1>Choose your next horizon.</h1>
+      <p class="subtitle">Use the controls to build query strings for the tours API.</p>
+    </header>
+
+    <section class="toolbar" aria-label="Tour filters">
+      <label>
+        Maximum price
+        <input id="maxPrice" type="number" min="0" placeholder="Any price">
+      </label>
+      <label>
+        Difficulty
+        <select id="difficulty">
+          <option value="">All levels</option>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+      </label>
+      <button id="filterButton" type="button">Find tours</button>
+      <button id="resetButton" class="secondary" type="button">Reset</button>
+    </section>
+
+    <p id="requestPreview" class="request-preview">Request: /api/tours</p>
+    <section id="toursGrid" class="tour-grid" aria-live="polite"></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
