@@ -64,6 +64,6 @@ else if(pathname === "/api/tours/detailed" && req.method === "GET")
     res.writeHead(404, {
       "content-type": "text/plain",
     });
-    res.end("No Route FOUND!");
+  res.end("No Route FOUND!");
   }
 });
