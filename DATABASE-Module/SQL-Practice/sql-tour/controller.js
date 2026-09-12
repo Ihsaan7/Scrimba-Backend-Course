@@ -548,3 +548,68 @@ export function addRating ( req , res)
             res.end(JSON.stringify(rows))
         })
 }
+
+export function tieredTours(req ,res)
+{
+    const sql=`
+        SELECT
+            tours.id,
+            tours.name AS tour_name,
+            tours.price,
+            CASE
+                WHEN price <= 300 THEN "Economy"
+                WHEN price BETWEEN 301 AND 800 THEN "Standard"
+                ELSE "Luxury"
+            END AS price_tier
+        FROM tours
+    `
+    db.all(sql ,[] , (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while fetching detials!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows))
+        })
+}
+
+export function applyDiscount(req , res)
+{
+    const sql=`
+        UPDATE tours
+            SET price = CASE
+                WHEN difficulty = 'Hard' THEN price *0.80
+                WHEN difficulty = 'Meduim' THEN price *0.90
+                WHEN difficulty = 'Low' THEN price *0.95
+            ELSE price
+        END;
+    `
+    db.all(sql ,[] , (err , rows )=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while Updaing price!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify({message:"Successfully updated Price" , rows}))
+        })
+}
