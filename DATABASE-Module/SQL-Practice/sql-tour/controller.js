@@ -521,3 +521,30 @@ export function getFullSummary(req , res)
             res.end(JSON.stringify(rows))
         })
 }
+
+export function addRating ( req , res)
+{
+    const sql =`
+        ALTER TABLE tours
+            ADD COLUMN rating REAL DEFAULT 5.0
+    `
+
+    db.run(sql ,[] , (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while fetching detials!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows))
+        })
+}
