@@ -488,4 +488,36 @@ export function getWorkLoad(req , res)
         })
 }
 
-ex
+export function getFullSummary(req , res)
+{
+    const sql=`
+        SELECT
+            tours.id,
+            tours.name AS tour_name,
+            tours.price,
+            guides.name AS guide_name,
+            categories.name AS category_name
+        FROM tours
+        LEFT JOIN guides ON tours.guide_id = guides.id,
+        LEFT JOIN categories ON tours.category_id = categories.id
+    `
+
+    db.all(sql ,[] , (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("All-Detial query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while fetching detials!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows))
+        })
+}
