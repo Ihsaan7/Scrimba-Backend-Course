@@ -36,3 +36,38 @@ export function getTours(req , res)
         )
         })
 }
+
+//-------------- GETTING STATS of Tours ---------------------
+export function getStats(req , res)
+{
+    const sql =`
+        SELECT
+            COUNT(*) AS total_count,
+            AVG(price) AS avg_price,
+            MAX(price) AS max_price,
+            Min(price) AS min_price
+        FROM tours
+    `
+
+    db.all(sql, [], (err , rows)=>
+        {
+            if(err)
+                {
+                    console.error("Cannot fetch tours-Stats from DB:", err.message)
+                    res.writeHead(
+                        500,
+                        {'content-type':'text/plain'}
+                    )
+                    res.end("Something went wrong while fetching Stats from DB!!!")
+                    return
+                }
+            res.writeHead(
+                200,
+                {'content-type':'application/json'}
+            )
+            res.end(JSON.stringify(rows)
+
+        )
+      
+        })
+}
