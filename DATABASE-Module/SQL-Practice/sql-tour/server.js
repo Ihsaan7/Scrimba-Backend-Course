@@ -1,5 +1,5 @@
 import http from "node";
-import { getAllTours, getTourByFilter, getTourByName, getTourByRange , getTourByBL, getToursStats, addTours, updateTour, deleteTour, getToursDetails, getAllDetail, getWorkLoad, getFullSummary, addRating, tieredTours, applyDiscount } from "./controller.js";
+import { getAllTours, getTourByFilter, getTourByName, getTourByRange , getTourByBL, getToursStats, addTours, updateTour, deleteTour, getToursDetails, getAllDetail, getWorkLoad, getFullSummary, addRating, tieredTours, applyDiscount, activeGuide } from "./controller.js";
 
 const PORT = process.env.PORT || 8000;
 
@@ -83,6 +83,11 @@ else if(pathname === "api/tours/price-tier" && req.method === "GET")
 else if(pathname === "api/tours/apply-discount" && req.method === "POST")
   {
     applyDiscount(req ,res)
+    return
+  }
+else if(pathname === "api/guides/active" && req.method === "GET")
+  {
+    activeGuide(req , res)
     return
   }
   else {

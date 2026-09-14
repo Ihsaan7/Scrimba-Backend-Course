@@ -613,3 +613,35 @@ export function applyDiscount(req , res)
             res.end(JSON.stringify({message:"Successfully updated Price" , rows}))
         })
 }
+
+export function activeGuide (req , res)
+{
+    const sql=`
+        SELECT *
+            FROM guides
+            WHERE EXISTS(
+                SELECT *
+                FROM tours
+                WHERE tours.guide_id = guides.id
+            )
+    `;
+
+    b.all(sql ,[] , (err , rows )=>
+        {
+            if(err)
+                {
+                    console.error("Active Guides query Failed!" , err.message)
+                    res.writeHead(
+                        500,
+                        {   'content-type':'application/json'}
+                    )
+                    res.end(JSON.stringify({error:"Something went wrong while Checking for Active Guides!"}))
+                    return
+                }
+            res.writeHead(
+                200,
+                {   'content-type':'application/json'}
+            )
+            res.end(JSON.stringify({message:"Successfully Searched Active guides" , rows}))
+        })
+}
