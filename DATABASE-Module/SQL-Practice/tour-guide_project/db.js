@@ -48,20 +48,18 @@ db.serialize(() => {
     `);
 
     // Seed mock data if empty
-    db.get("SELECT COUNT(*) as count FROM guides", (err, row) => {
+    db.get("SELECT COUNT(*) as count FROM tours", (err, row) => {
         if (row && row.count === 0) {
             console.log("Seeding guides, tours, and bookings...");
 
-            db.run("INSERT INTO guides (name, email) VALUES ('Sarah Connor', 'sarah@tours.com')");
-            db.run("INSERT INTO guides (name, email) VALUES ('John Doe', 'john@tours.com')");
-            db.run("INSERT INTO guides (name, email) VALUES ('Alice Smith', 'alice@tours.com')");
+            db.run("INSERT INTO guides (name, email) SELECT 'Sarah Connor', 'sarah@tours.com' WHERE NOT EXISTS (SELECT 1 FROM guides WHERE name = 'Sarah Connor')");
+            db.run("INSERT INTO guides (name, email) SELECT 'John Doe', 'john@tours.com' WHERE NOT EXISTS (SELECT 1 FROM guides WHERE name = 'John Doe')");
+            db.run("INSERT INTO guides (name, email) SELECT 'Alice Smith', 'alice@tours.com' WHERE NOT EXISTS (SELECT 1 FROM guides WHERE name = 'Alice Smith')");
 
-            const insertTours = db.prepare("INSERT INTO tours (name, price, difficulty, guide_id) VALUES (?, ?, ?, ?)");
-            insertTours.run("Forest Backpacker", 297, "Easy", 1);
-            insertTours.run("Sea Explorer", 497, "Medium", 1);
-            insertTours.run("Snow Adventurer", 997, "Hard", 2);
-            insertTours.run("Desert Dune Glider", 197, "Easy", NULL);
-            insertTours.finalize();
+            db.run("INSERT INTO tours (name, price, difficulty, guide_id) SELECT 'Forest Backpacker', 297, 'Easy', id FROM guides WHERE name = 'Sarah Connor'");
+            db.run("INSERT INTO tours (name, price, difficulty, guide_id) SELECT 'Sea Explorer', 497, 'Medium', id FROM guides WHERE name = 'Sarah Connor'");
+            db.run("INSERT INTO tours (name, price, difficulty, guide_id) SELECT 'Snow Adventurer', 997, 'Hard', id FROM guides WHERE name = 'John Doe'");
+            db.run("INSERT INTO tours (name, price, difficulty, guide_id) VALUES ('Desert Dune Glider', 197, 'Easy', null)");
 
             const insertBookings = db.prepare("INSERT INTO bookings (customer_name, tour_id) VALUES (?, ?)");
             insertBookings.run("Michael Scott", 1);
