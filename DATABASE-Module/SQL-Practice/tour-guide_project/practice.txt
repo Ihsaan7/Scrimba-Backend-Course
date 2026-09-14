@@ -1,0 +1,37 @@
+    🎯 Route 1 Spec: GET /api/toursNow we start building! 
+    You will write server.js and controller.js to build our first route.
+    Your Goal:Handle a GET request to /api/tours.Requirements:Perform a LEFT JOIN between tours and guides.
+    Retrieve:tours.idtours.name AS tour_nametours.pricetours.difficultyguides.name AS guide_nameSupport optional filtering query parameters:
+    If maxPrice query param exists $\rightarrow$ filter WHERE price <= ?.Return HTTP 200 OK with JSON array of results.Guard database errors with 500 and return;
+    .🧪 Expected Postman OutputRequest in Postman:GET http://localhost:8000/api/tours
+    Expected Response Body (200 OK):[
+    {
+        "id": 1,
+        "tour_name": "Forest Backpacker",
+        "price": 297,
+        "difficulty": "Easy",
+        "guide_name": "Sarah Connor"
+    },
+    {
+        "id": 2,
+        "tour_name": "Sea Explorer",
+        "price": 497,
+        "difficulty": "Medium",
+        "guide_name": "Sarah Connor"
+    },
+    {
+        "id": 3,
+        "tour_name": "Snow Adventurer",
+        "price": 997,
+        "difficulty": "Hard",
+        "guide_name": "John Doe"
+    },
+    {
+        "id": 4,
+        "tour_name": "Desert Dune Glider",
+        "price": 197,
+        "difficulty": "Easy",
+        "guide_name": null
+    }
+    ]
+    Write your server.js and controller.js code from scratch for Route 1, test it in Postman, and paste your code here when you're ready to verify! 🚀
