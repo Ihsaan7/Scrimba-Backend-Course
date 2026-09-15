@@ -1,5 +1,5 @@
 import http from 'node:http'
-import { getStats, getTours } from './controller.js';
+import { createTour, getStats, getTours } from './controller.js';
 
 
 
@@ -18,7 +18,7 @@ const server = http.createServer(async( req ,res)=>
                 getTours(req , res);
                 return;
             }
-        // ======== Getting all Tours ============
+        // ======== END ============
         
         // ======== Getting tours-Stats ============
         else if(pathname === "/api/tours/stats" && req.method === "GET")
@@ -26,8 +26,19 @@ const server = http.createServer(async( req ,res)=>
                 getStats( req , res)
                 return
             }
-        // ======== Getting tours-Stats ============
+        // ======== END ============
+        
+        // =========== CREATING DATA (Tours) ============
+        else if(pathname === "/api/tours" && req.method === "POST")
+            {
+                createTour(req , res)
+                return
+            }
+        // =========== END ============
+    
     })
+
+
 
 server.listen(PORT || 8000,()=>
     {
